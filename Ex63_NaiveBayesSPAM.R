@@ -1,13 +1,22 @@
+# Import the text mining package tm
 library("tm")
 
+# Read the given sms messages; do not factor category variables so
+# that each text message is not given its own unique factor number
 sms = read.csv("sms_spam.csv",stringsAsFactors = FALSE)
-table(sms$type)
+
+# Convert the target variable into a factor
 sms$type <- factor(sms$type)
 
-round(prop.table(table(sms$type))*100,digits = 1)
-
+# Convert sms messages into a Corpus
 sms_corpus <- Corpus(VectorSource(sms$text))
 
+# Clean Corpus by 
+#  converting to lower case
+#  removing numbers
+#  removing stop words
+#  removing punctuation
+#  removing white space
 p = tm_map(sms_corpus,tolower)
 p = tm_map(p,removeNumbers)
 p = tm_map(p,removeWords,stopwords())
